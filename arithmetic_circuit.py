@@ -2,6 +2,8 @@ import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.circuit.library.basis_change import QFT
 
+from .utils import init_register
+
 
 def phi_adder(num_qubits: int):
     qr_a = QuantumRegister(num_qubits, name="a")
@@ -111,11 +113,3 @@ def cmult_mod_inv(num_qubits: int, a_inv: int, n: int):
     qc.append(QFT(num_qubits + 1, do_swaps=False).inverse().to_gate(), qr_b[:])
 
     return qc.to_gate()
-
-
-def init_register(qc, qr, x: int):
-    a = x
-    for qr_i in qr:
-        if a & 1 == 1:
-            qc.x(qr_i)
-        a >>= 1
