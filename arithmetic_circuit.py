@@ -4,7 +4,7 @@ import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.circuit.library.basis_change import QFT
 
-from .utils import init_register
+from utils import init_register
 
 
 def phi_adder(num_qubits: int):
