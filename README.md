@@ -124,4 +124,5 @@ $\ket{c} = \ket{1}$ なら，$\ket{x}$ を $\ket{ax \bmod{N}}$ にするゲー�
 ### 参考文献
 
 [1] T. G. Draper, Addition on a Quantum Computer, 2000. [arXiv:quant-ph/0008033](https://arxiv.org/pdf/quant-ph/0008033.pdf)
+
 [2] Stephane Beauregard, Circuit for Shor's algorithm using 2n+3 qubits, [arXiv:quant-ph/0205095](https://arxiv.org/abs/quant-ph/0205095)
