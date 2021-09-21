@@ -1,3 +1,5 @@
+from math import gcd
+
 import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.circuit.library.basis_change import QFT
@@ -111,5 +113,30 @@ def cmult_mod_inv(num_qubits: int, a_inv: int, n: int):
         init_register(qc, qr_a, a_i)
 
     qc.append(QFT(num_qubits + 1, do_swaps=False).inverse().to_gate(), qr_b[:])
+
+    return qc.to_gate()
+
+
+def c_Ua(num_qubits: int, a: int, n: int):
+    # define qubits
+    qr_c = QuantumRegister(1, "c")  # control
+    qr_x = QuantumRegister(num_qubits, "x")
+    qr_a = QuantumRegister(num_qubits, "a")  # must be zero
+    qr_b = QuantumRegister(num_qubits, "b")
+    qr_co = QuantumRegister(1, "co")  # carry out
+    qr_n = QuantumRegister(num_qubits, "n")  # modulo
+    qr_z2 = QuantumRegister(1, "z2")  # for adder modulo
+    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_co, qr_n, qr_z2]
+    # define circuit
+    qc = QuantumCircuit(*qr_list, name="c_Ua")
+
+    assert gcd(a, n) == 1
+    a_inv = pow(a, -1, n)
+
+    qc.append(cmult_mod(num_qubits, a, n), qr_c[:] + qr_x[:] + qr_a[:] + qr_b[:] + qr_co[:] + qr_n[:] + qr_z2[:])
+    # swap x, b
+    for i in range(num_qubits):
+        qc.cswap(qr_c[:], qr_x[i], qr_b[i])
+    qc.append(cmult_mod_inv(num_qubits, a_inv, n), qr_c[:] + qr_x[:] + qr_a[:] + qr_b[:] + qr_co[:] + qr_n[:] + qr_z2[:])
 
     return qc.to_gate()
