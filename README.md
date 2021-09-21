@@ -1,3 +1,5 @@
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 # Quantum Simulation
 
 Qiskit を用いた，卒業研究用の量子シミュレーションコード．
