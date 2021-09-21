@@ -72,8 +72,8 @@ def cmult_mod(num_qubits: int, a: int, n: int):
     qr_a = QuantumRegister(num_qubits, "a")
     qr_b = QuantumRegister(num_qubits + 1, "b")  # for overflow
     qr_n = QuantumRegister(num_qubits, "n")  # modulo
-    qr_z2 = QuantumRegister(1, "z2")  # for adder modulo
-    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_n, qr_z2]
+    qr_z = QuantumRegister(1, "z")  # for adder modulo
+    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_n, qr_z]
     # define circuit
     qc = QuantumCircuit(*qr_list, name="cmult_mod")
 
@@ -82,7 +82,7 @@ def cmult_mod(num_qubits: int, a: int, n: int):
     for i in range(num_qubits):
         a_i = (2 ** i) * a % n
         init_register(qc, qr_a, a_i)
-        qr_cc_adder_modulo = qr_c[:] + qr_x[i:i+1] + qr_a[:] + qr_b[:] + qr_n[:] + qr_z2[:]
+        qr_cc_adder_modulo = qr_c[:] + qr_x[i:i+1] + qr_a[:] + qr_b[:] + qr_n[:] + qr_z[:]
         qc.append(phi_cc_adder_modulo(num_qubits), qr_cc_adder_modulo)
         init_register(qc, qr_a, a_i)
 
@@ -98,8 +98,8 @@ def cmult_mod_inv(num_qubits: int, a_inv: int, n: int):
     qr_a = QuantumRegister(num_qubits, "a")  # zeros (don't init)
     qr_b = QuantumRegister(num_qubits + 1, "b")  # for overflow
     qr_n = QuantumRegister(num_qubits, "n")  # modulo
-    qr_z2 = QuantumRegister(1, "z2")  # for adder modulo
-    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_n, qr_z2]
+    qr_z = QuantumRegister(1, "z")  # for adder modulo
+    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_n, qr_z]
     # define circuit
     qc = QuantumCircuit(*qr_list, name="cmult_mod")
 
@@ -108,7 +108,7 @@ def cmult_mod_inv(num_qubits: int, a_inv: int, n: int):
     for i in range(num_qubits - 1, -1, -1):
         a_i = (2 ** i) * a_inv % n
         init_register(qc, qr_a, a_i)
-        qr_cc_adder_modulo = qr_c[:] + qr_x[i:i+1] + qr_a[:] + qr_b[:] + qr_n[:] + qr_z2[:]
+        qr_cc_adder_modulo = qr_c[:] + qr_x[i:i+1] + qr_a[:] + qr_b[:] + qr_n[:] + qr_z[:]
         qc.append(phi_cc_adder_modulo(num_qubits).inverse(), qr_cc_adder_modulo)
         init_register(qc, qr_a, a_i)
 
@@ -125,18 +125,18 @@ def c_Ua(num_qubits: int, a: int, n: int):
     qr_b = QuantumRegister(num_qubits, "b")
     qr_co = QuantumRegister(1, "co")  # carry out
     qr_n = QuantumRegister(num_qubits, "n")  # modulo
-    qr_z2 = QuantumRegister(1, "z2")  # for adder modulo
-    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_co, qr_n, qr_z2]
+    qr_z = QuantumRegister(1, "z")  # for adder modulo
+    qr_list = [qr_c, qr_x, qr_a, qr_b, qr_co, qr_n, qr_z]
     # define circuit
     qc = QuantumCircuit(*qr_list, name="c_Ua")
 
     assert gcd(a, n) == 1
     a_inv = pow(a, -1, n)
 
-    qc.append(cmult_mod(num_qubits, a, n), qr_c[:] + qr_x[:] + qr_a[:] + qr_b[:] + qr_co[:] + qr_n[:] + qr_z2[:])
+    qc.append(cmult_mod(num_qubits, a, n), qr_c[:] + qr_x[:] + qr_a[:] + qr_b[:] + qr_co[:] + qr_n[:] + qr_z[:])
     # swap x, b
     for i in range(num_qubits):
         qc.cswap(qr_c[:], qr_x[i], qr_b[i])
-    qc.append(cmult_mod_inv(num_qubits, a_inv, n), qr_c[:] + qr_x[:] + qr_a[:] + qr_b[:] + qr_co[:] + qr_n[:] + qr_z2[:])
+    qc.append(cmult_mod_inv(num_qubits, a_inv, n), qr_c[:] + qr_x[:] + qr_a[:] + qr_b[:] + qr_co[:] + qr_n[:] + qr_z[:])
 
     return qc.to_gate()
