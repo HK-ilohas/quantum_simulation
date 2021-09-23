@@ -11,7 +11,7 @@ def shor_algorithm(num_qubits: int, a: int, n: int) -> int:
     assert a.bit_length() <= num_qubits
     assert n.bit_length() <= num_qubits
 
-    n_counts = num_qubits + 2
+    n_counts = num_qubits * 2
 
     # define qubits
     qr_x = QuantumRegister(n_counts, "x")  # target
