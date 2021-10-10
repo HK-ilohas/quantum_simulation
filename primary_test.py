@@ -3,6 +3,7 @@ from math import gcd
 import csv
 
 
+# instead of quantum order finding
 def order(a, N):
     for i in range(1, N):
         if pow(a, i, N) == 1:
