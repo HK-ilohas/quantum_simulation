@@ -16,6 +16,8 @@ Qiskit を用いた，卒業研究用の量子シミュレーションコード�
     - [`cmult_mod_inv` (`num_qubits`, `a_inv`, `n`)](#cmult_mod_inv-num_qubits-a_inv-n)
     - [`c_Ua` (`num_qubits`, `a`, `n`)](#c_ua-num_qubits-a-n)
     - [参考文献](#参考文献)
+  - [shor.py](#shorpy)
+    - [`shor_algorithm` (`num_qubits`, `a`, `n`)](#shor_algorithm-num_qubits-a-n)
 
 <!-- /code_chunk_output -->
 
@@ -118,3 +120,15 @@ GitHub の README では数式が使用できないので，詳しくは [[2]](#
 [1] T. G. Draper, Addition on a Quantum Computer, 2000. [arXiv:quant-ph/0008033](https://arxiv.org/pdf/quant-ph/0008033.pdf)
 
 [2] Stephane Beauregard, Circuit for Shor's algorithm using 2n+3 qubits, [arXiv:quant-ph/0205095](https://arxiv.org/abs/quant-ph/0205095)
+
+## shor.py
+
+### `shor_algorithm` (`num_qubits`, `a`, `n`)
+
+量子位数発見を行う関数．
+
+| 引数 | 説明 |
+| ---- | ---- |
+| `num_qubits` | `a`, `N` のビット数 |
+| `a` | `a` の値 |
+| `n` | `N` の値 |
